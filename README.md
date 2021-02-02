@@ -3,9 +3,10 @@
 # DzHTMLText
 ## Delphi and Lazarus HTML Label component
 
-![Delphi Supported Versions](https://img.shields.io/badge/Delphi%20Supported%20Versions-XE2..10.3%20Rio-blue.svg)
+![Delphi Supported Versions](https://img.shields.io/badge/Delphi%20Supported%20Versions-XE2..10.4-blue.svg)
 ![Platforms](https://img.shields.io/badge/Platforms-Win32%20and%20Win64-red.svg)
 ![Auto Install](https://img.shields.io/badge/-Auto%20Install%20App-orange.svg)
+![VCL](https://img.shields.io/badge/-VCL-lightgrey.svg)
 ![Lazarus support](https://img.shields.io/badge/-Lazarus%20support-green.svg)
 ![CJK line break](https://img.shields.io/badge/-Chinese+Japanese+Korean%20line%20break%20support-yellowgreen.svg)
 
@@ -28,6 +29,47 @@
 - [Donate](#donate)
 
 ## What's New
+
+- 12/18/2020 (Version 2.11)
+
+   - Updated Component Installer app (Fixed call to rsvars.bat when Delphi is installed in a path containing spaces characters).
+
+- 11/03/2020 (Version 2.10)
+
+   - Implemented new `<sup>` and `<sub>` tags.
+   - Fixed to not break line in the middle of a word when using tags inside the word.
+   - Fixed Lazarus Bullet symbol.
+   - New internal exception class.
+
+- 10/31/2020 (Version 2.9)
+
+   - Included Delphi 10.4 auto-install support.
+
+- 10/27/2020 (Version 2.8)
+
+   - Fixed previous Delphi versions (at least on XE2, XE3, XE4 and XE5) package tag. It was causing package compilation error.
+   - Fixed the use of System.ImageList unit in Demo project because it's only available from XE8.
+   - Fixed internal .ToString conversion because is not available at some Delphi versions.
+
+- 10/27/2020 (Version 2.7)
+
+   - Fixed incorrect Unicode characters on Lazarus (issue #31).
+
+- 10/26/2020 (Version 2.6 *version format reverted to original*)
+
+   - Implemented internal Version Control used by TDam component to synchronize TDzHTMLText dependency.
+
+- 10/26/2020 (Version 2.05)
+
+   - Updated CompInstall to version 2.0 (now supports GitHub auto-update)
+
+- 10/18/2020 (Version 2.04 *changed version format*)
+
+   - Since the Dam component depends on this component and it needs to know its version, an internal version constant has been added, and the format of About property has been changed from "0.0" to "0.00", where the previous version was 2.3 and now the version is 2.04.
+
+- 10/14/2020
+
+   - Removed Lazarus warnings.
 
 - 08/30/2020 (Version 2.3)
 
@@ -191,6 +233,8 @@ Here are all possible tags you can use in text:
 <SPOILER:name></SPOILER> - Spoiler Title
 <SDETAIL:name></SDETAIL> - Spoiler Detail
 <LS:nnn></LS> - Line spacing where 'nnn' is the height in pixels
+<SUP></SUP> - Superscript
+<SUB></SUB> - Subscript
 ```
 
 > The tags notation is case-insensitive, so you can use `<B>Text</B>` or `<b>Text</b>`.
@@ -216,7 +260,7 @@ Close Delphi IDE and run **CompInstall.exe** app to auto install component into 
 4. If you want to use Win64 platform, select this platform and Build again.
 5. Add sub-path Win32\Release to the Library paths at Tools\Options using 32-bit option, and if you have compiled to 64 bit platform, add sub-path Win64\Release using 64-bit option.
 
-Supports Delphi XE2..Delphi 10.3 Rio
+Supports Delphi XE2..Delphi 10.4
 
 ## Component Properties
 
