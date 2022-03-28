@@ -41,7 +41,7 @@ uses
 {$ELSE}
   System.Generics.Collections, System.Types, System.Classes,
   {$IFDEF FMX}
-  FMX.Controls, FMX.Types, System.UITypes
+  FMX.Forms, FMX.Controls, FMX.Types, System.UITypes
     {$IFDEF USE_NEW_UNITS}, FMX.StdCtrls, FMX.Graphics, FMX.MultiResBitmap{$ENDIF}
     {$IFDEF USE_IMGLST}, FMX.ImgList{$ENDIF}
   {$ELSE}
@@ -309,6 +309,7 @@ type
 
     function GetIsLinkHover: Boolean;
     procedure CheckMouse(X, Y: TPixels); //check links by mouse position
+    procedure SetCursorByLink(Selected: Boolean);
     procedure SetCursor(const Value: TCursor); reintroduce;
     procedure SetLineVertAlign(const Value: TDHVertAlign);
     procedure SetOverallVertAlign(const Value: TDHVertAlign);
@@ -522,7 +523,7 @@ uses
   {$ENDIF}
 {$ENDIF};
 
-const STR_VERSION = '3.7';
+const STR_VERSION = '3.10';
 
 procedure Register;
 begin
@@ -1182,13 +1183,13 @@ begin
   begin
     if Assigned(Link) then //enter the link
     begin
-      inherited Cursor := crHandPoint;
+      SetCursorByLink(True);
       FSelectedLink := Link;
       if Assigned(FOnLinkEnter) then
         FOnLinkEnter(Self, Link);
     end else
     begin //leave the link
-      inherited Cursor := FCursor;
+      SetCursorByLink(False);
       Link := FSelectedLink; //save to use on OnLinkLeave event
       FSelectedLink := nil;
       if Assigned(FOnLinkLeave) then
@@ -1201,6 +1202,14 @@ begin
     Invalidate;
     {$ENDIF}
   end;
+end;
+
+procedure TDzHTMLText.SetCursorByLink(Selected: Boolean);
+begin
+  if Selected then
+    inherited Cursor := crHandPoint
+  else
+    inherited Cursor := FCursor;
 end;
 
 procedure TDzHTMLText.Click;
@@ -1359,7 +1368,9 @@ begin
 end;
 
 procedure TDzHTMLText.Rebuild;
-var B: TBuilder;
+var
+  B: TBuilder;
+  P: TPoint;
 begin
   if csLoading in ComponentState then Exit;
 
@@ -1375,6 +1386,18 @@ begin
   finally
     B.Free;
   end;
+
+  //reset selected link
+  FSelectedLink := nil;
+  SetCursorByLink(False);
+
+  //update link by cursor pos
+  {$IFDEF FMX}
+  P := ScreenToLocal(Screen.MousePos);
+  {$ELSE}
+  P := ScreenToClient(Mouse.CursorPos);
+  {$ENDIF}
+  CheckMouse(P.X, P.Y);
 end;
 
 //
@@ -1844,7 +1867,7 @@ begin
   inherited Create;
   Builder := xBuilder;
   Lb := Builder.Lb;
-  C := Lb.Canvas;
+  C := {$IFDEF FMX}TCanvasManager.MeasureCanvas{$ELSE}Lb.Canvas{$ENDIF};
   C.Font.Assign(Lb.Font);
   {$IFDEF FMX}
   C.Stroke.Color := Lb.FFontColor;
