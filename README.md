@@ -32,12 +32,27 @@
 
 ## What's New
 
-- 01/02/2022 (Version 3.10)
+- 04/26/2023 (Version 4.1)
 
-   - Fixed canvas usage when component is loading in FMX environment using MeasureCanvas. This will avoid access violation in canvas when component is loading (Issue #65).
+   - Fixed Delphi 10 Seattle compiling (conditional directive about GetDesignDpi)
 
 <details>
   <summary>Click here to view the entire changelog</summary>
+
+- 04/11/2023 (Version 4.0)
+
+   - DPI Scaling supporting for VCL (Windows and Linux)
+
+- 04/07/2023 (Version 3.11)
+
+   - New `<LINE>` tag
+   - New `<VALIGN>` tag
+   - New `<OFFSET>` tag
+   - Fixed MaxWidth to calc correct width size when using borders
+
+- 01/02/2022 (Version 3.10)
+
+   - Fixed canvas usage when component is loading in FMX environment using MeasureCanvas. This will avoid access violation in canvas when component is loading (Issue #65).
 
 - 11/03/2021 (Version 3.9)
 
@@ -279,8 +294,8 @@ Here are all possible tags you can use in text:
 <S></S> - Strike out
 <FN:abc></FN> - Font Name
 <FS:123></FS> - Font Size
-<FC:clColor(VCL)|Color(FMX)|$123456|$12345678|#123456|#12345678></FC> - Font Color
-<BC:clColor(VCL)|Color(FMX)|$123456|$12345678|#123456|#12345678></BC> - Background Color
+<FC:{COLOR_VALUE}></FC> - Font Color
+<BC:{COLOR_VALUE}></BC> - Background Color
 <BR> - Line Break
 <NBR> - Prevent line break after #13#10 sequence
 <L></L> - Align Left
@@ -299,6 +314,18 @@ Here are all possible tags you can use in text:
 <LS:nnn></LS> - Line spacing where 'nnn' is the height in pixels
 <SUP></SUP> - Superscript
 <SUB></SUB> - Subscript
+<LINE:[width=123|full],[height=456],[color={COLOR_VALUE}],[coloralt={COLOR_VALUE}]> - Horizontal single or dual color line
+  "full" option only works when AutoWidth is disabled
+  Default values:
+    width = 100
+    height = 1
+    color = Current font color
+    coloralt = No value (specify a color to draw dual color line, otherwise it will draw a single color line)
+<VALIGN:top|center|bottom></ALIGN> - Aligning content vertically to the line
+<OFFSET:[top=123],[bottom=456]></OFFSET> - Content margin spacing
+  Offset margins are memorized if a new offset tag is specifyed without same parameter name
+
+* {COLOR_VALUE} - clColor(VCL)|Color(FMX)|$123456|$12345678|#123456|#12345678
 ```
 
 > The tags notation is case-insensitive, so you can use `<B>Text</B>` or `<b>Text</b>`.
@@ -334,7 +361,7 @@ Supports Delphi XE3..Delphi 11
 `AutoWidth: Boolean` = Auto set width of control when Text property changed.
 If you are using AutoWidth, the text never wraps to a new line unless a line break is specified at text or there is a value specified in MaxWidth property.
 
-`AutoOpenLink: Boolean` = Open links automatically on click over, without set event OnLinkClick. This only works in Windows, Linux and Android platforms. For others platforms like iOS and MacOS, you can use OnLinkClick event.
+`AutoOpenLink: Boolean` = Open links automatically on click over, without set event OnLinkClick.
 
 `Borders: TDHBorders` = Defines `Left`, `Top`, `Right` and `Bottom` sub-properties, specifying the text area margins.
 
