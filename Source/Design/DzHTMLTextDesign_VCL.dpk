@@ -1,4 +1,4 @@
-package DzHTMLText_VCL;
+package DzHTMLTextDesign_VCL;
 
 {$R *.res}
 {$R 'DzHTMLText.dcr'}
@@ -26,16 +26,15 @@ package DzHTMLText_VCL;
 {$IMAGEBASE $400000}
 {$DEFINE RELEASE}
 {$ENDIF IMPLICITBUILDING}
-{$DESCRIPTION 'Digao Dalpiaz - DzHTMLText component (VCL)'}
+{$DESCRIPTION 'Digao Dalpiaz - DzHTMLText Component - VCL Designtime'}
+{$DESIGNONLY}
 {$IMPLICITBUILD ON}
 
 requires
-  rtl,
-  vclimg,
-  vcl;
+  designide,
+  DzHTMLText_VCL;
 
 contains
-  Vcl.DzHTMLText in 'Vcl.DzHTMLText.pas',
-  ScalingUtils in 'ScalingUtils.pas';
+  Vcl.DzHTMLTextReg in 'Vcl.DzHTMLTextReg.pas';
 
 end.
